@@ -20,7 +20,8 @@ def decode(s):
     return codecs.escape_decode(s)[0]
 
 def str_enc(x):
-    return x.encode()
+    # return x.encode()
+    return decode(x)
 
 def char_enc(x):
     x = x.encode()
@@ -69,6 +70,46 @@ def pack(fmt,xs):
 
 struct_I = struct.Struct('I')
 
+def fix(node,parent_tail=0):
+    attrib = node.attrib
+    if 'size' in attrib:
+        size = int(attrib.get('size'))
+        tail = size
+        for child in node:
+            tail -= fix(child,tail)
+        if tail < 0:
+            size -= tail
+            attrib['size'] = str(size)
+        size += 8
+        if 'flags' in attrib:
+            size += 8
+        return size
+
+    elif 'fmt' in attrib:
+        children = node.getchildren()
+        fmt = attrib.get('fmt')
+        size = struct.calcsize(fmt)
+
+        if re.match(r'[^0-9]*s$',fmt):
+            size -= 1
+            tail = parent_tail - size
+
+            if len(children)==0:
+                last = node.text
+            else:
+                last = children[-1].text
+
+            last_len = len(decode(last))
+            if last_len > tail: # doesn't fit
+                tail = last_len
+                size += last_len
+            else: # fits
+                size = parent_tail
+
+            attrib['fmt'] = fmt[:-1]+'{}s'.format(tail)
+
+        return size
+
 def save(f,node):
     attrib = node.attrib
     if 'size' in attrib:
@@ -95,7 +136,7 @@ def save(f,node):
             size += 8
         return size
 
-    if 'fmt' in attrib:
+    elif 'fmt' in attrib:
         children = node.getchildren()
         if len(children)==0:
             values = [ node.text ]
@@ -107,6 +148,12 @@ def save(f,node):
         return f.write(pack(attrib.get('fmt'),values))
 
 # print(root.xpath('/file/TES3')[0].attrib)
+
+for record in root:
+    fix(record)
+
+# with open('tmp.xml', 'wb') as f:
+#     f.write(Tree.tostring(root, pretty_print=True))
 
 with open(sys.argv[2],'wb') as f:
     for record in root:

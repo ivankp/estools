@@ -129,8 +129,8 @@ def read(data,a,b):
             raise Exception('record ended at {} instead of {}'.format(a,b))
     return recs
 
-tree = read(ess,0,70089+4+12)
-# tree = read(ess,0,total_size)
+# tree = read(ess,0,70089+4+12)
+tree = read(ess,0,total_size)
 
 print('records in total:',nrec)
 print('top level:',len(tree))
