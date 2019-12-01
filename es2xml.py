@@ -101,7 +101,7 @@ def read(data,a,b):
             fmts = [('s',None)] if rec.flags is None else ["children"]
 
         end = a + rec.size
-        print('{:4} {:8} {:8} {:8} {:8}'.format(rec.tag,rec.size,a,end,b))
+        # print('{:4} {:8} {:8} {:8} {:8}'.format(rec.tag,rec.size,a,end,b))
 
         last = len(fmts)-1
         for i in range(last+1):

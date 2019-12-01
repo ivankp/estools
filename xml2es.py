@@ -17,6 +17,8 @@ with open(sys.argv[1]) as f:
     root = tree.getroot()
 
 def decode(s):
+    if s is None or s=='':
+        return b'';
     return codecs.escape_decode(s)[0]
 
 def str_enc(x):
@@ -114,7 +116,7 @@ def save(f,node):
     attrib = node.attrib
     if 'size' in attrib:
         size = int(attrib.get('size'))
-        print(node.tag, size)
+        # print(node.tag, size)
         f.write(node.tag.encode('ascii'))
         f.write(struct_I.pack(size))
         flags = None
