@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 import sys
-
 if len(sys.argv)!=3:
-    print('usage:',sys.argv[0],'input.xml output')
+    print('usage:',sys.argv[0],'input.xml output.png')
     sys.exit(1)
 
 import codecs
@@ -42,8 +41,7 @@ def add4th(s):
 
 from lxml import etree as Tree
 with open(sys.argv[1]) as f:
-    tree = Tree.parse(f)
-    root = tree.getroot()
+    root = Tree.parse(f).getroot()
 
 size = int(root.xpath('(/file/FMAP/MAPH/x)[1]')[0].text)
 mapd = root.xpath('(/file/FMAP/MAPD/x)[1]')[0].text

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-
 if len(sys.argv)!=3:
     print('usage:',sys.argv[0],'input.xml output.es?')
     sys.exit(1)
@@ -16,8 +15,7 @@ assert (struct.calcsize('L')==8)
 
 from lxml import etree as Tree
 with open(sys.argv[1]) as f:
-    tree = Tree.parse(f)
-    root = tree.getroot()
+    root = Tree.parse(f).getroot()
 
 def decode(s):
     if s is None or s=='':

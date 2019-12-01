@@ -4,8 +4,8 @@
 
 import sys, struct, json, re
 
-if len(sys.argv)!=2:
-    print('usage:',sys.argv[0],'save.ess')
+if len(sys.argv)!=2 and len(sys.argv)!=3:
+    print('usage:',sys.argv[0],'save.ess [output.xml]')
     sys.exit(1)
 
 assert (struct.calcsize('i')==4)
@@ -40,6 +40,19 @@ for key in fmt_rec:
     if isinstance(val,str):
         fmt_rec[key] = fmt_rec[val]
 fmt_flg = file_format['have_flags']
+
+xml_safe_dict = [
+  ('&', '&amp;'),
+  ('"', '&quot;'),
+  ("'", '&apos;'),
+  ('<', '&lt;'),
+  ('>', '&gt;')
+]
+def xml_safe(s):
+    s = str(s)
+    for c, x in xml_safe_dict:
+        s = s.replace(c,x)
+    return s
 
 nrec = 0
 class record:
@@ -82,19 +95,6 @@ class record:
         else:
             return ["children"]
 
-xml_safe_dict = [
-  ('&', '&amp;'),
-  ('"', '&quot;'),
-  ("'", '&apos;'),
-  ('<', '&lt;'),
-  ('>', '&gt;')
-]
-def xml_safe(s):
-    s = str(s)
-    for c, x in xml_safe_dict:
-        s = s.replace(c,x)
-    return s
-
 class attr:
     def __init__(self,fmt,val):
         self.fmt = fmt
@@ -125,7 +125,11 @@ flags_struct = struct.Struct('8s')
 def read(data,a,b,parent=None):
     recs = [ ]
     while True:
-        rec = record(*rec_struct.unpack_from(data,a),parent)
+        try:
+            rec = record(*rec_struct.unpack_from(data,a),parent)
+        except:
+            print('Error at file pos:',a)
+            raise
         a += 8
         if rec.tag in fmt_flg:
             rec.flags = rb2str(flags_struct.unpack_from(data,a)[0])
@@ -167,7 +171,13 @@ tree = read(ess,0,total_size)
 print('records in total:',nrec)
 print('top level:',len(tree))
 
-with open(re.sub('(?:\.ess)?$','.xml',sys.argv[1]),'w') as f:
+if len(sys.argv)==3:
+    ofname = sys.argv[2]
+else:
+    ofname = re.sub('(?:\.ess)?$','.xml',sys.argv[1])
+    ofname = re.sub(r'^.*[/\\]','',ofname)
+print('writing',ofname)
+with open(ofname,'w') as f:
     f.write('<file name="'+sys.argv[1]+'">\n')
     for node in tree:
         node.write(f)

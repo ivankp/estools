@@ -2,7 +2,7 @@
     "TES3", "GLOB", "CLAS", "SCPT", "REGN", "SPEL", "NPC_", "BOOK",
     "CREA", "NPCC", "CREC", "ALCH", "CELL", "REFR", "DIAL", "QUES",
     "JOUR", "KLST", "FMAP", "PCDT", "STLN", "GAME", "CONT", "CNTC",
-    "SPLM", "INFO"
+    "SPLM", "INFO", "ENCH", "CLOT", "FACT", "WEAP"
   ],
   "records": {
     "HEDR": [
@@ -122,6 +122,22 @@
     "FMAP.MAPH": [
       ["I","Size"],
       ["I","Value"]
+    ],
+    "CELL.DATA": [ "size", {
+        "24": [
+          ["f","XPos"],
+          ["f","YPos"],
+          ["f","ZPos"],
+          ["f","XRotate"],
+          ["f","YRotate"],
+          ["f","ZRotate"]
+        ],
+        "12": [
+          ["I","Flags"],
+          ["i","GridX"],
+          ["i","GridY"]
+        ]
+      }
     ]
   }
 }
