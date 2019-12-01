@@ -18,13 +18,16 @@
       ["f",null],
       ["32s","CharacterName"]
     ],
+    "TES3.DATA": [
+      ["L","FileSize"]
+    ],
     "CLDT": [
       ["15I",null]
     ],
     "-CNDT": [
       ["i",null]
     ],
-    "-FLTV": [
+    "GLOB.FLTV": [
       ["f",null]
     ],
     "NPCO": [

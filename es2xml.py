@@ -9,6 +9,7 @@ if len(sys.argv)!=2:
 assert (struct.calcsize('i')==4)
 assert (struct.calcsize('I')==4)
 assert (struct.calcsize('1s')==1)
+assert (struct.calcsize('L')==8)
 
 def b2str(x):
     if isinstance(x,bytes):
