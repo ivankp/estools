@@ -1,0 +1,35 @@
+{ "have_flags": [
+    "TES3", "GLOB", "CLAS", "SCPT", "REGN", "SPEL", "NPC_", "BOOK",
+    "CREA", "NPCC", "CREC", "ALCH", "CELL", "REFR", "DIAL", "QUES",
+    "JOUR", "KLST", "FMAP", "PCDT", "STLN", "GAME", "CONT", "CNTC",
+    "SPLM", "INFO"
+  ],
+  "records": {
+    "HEDR": [
+      ["f","Version"],
+      ["4s","FileType"],
+      ["32s","Author"],
+      ["256s","Description"],
+      ["I","NumRecords"]
+    ],
+    "-GMDT": [
+      ["6f",null],
+      ["64s","CellName"],
+      ["f",null],
+      ["32s","CharacterName"]
+    ],
+    "CLDT": [
+      ["15I",null]
+    ],
+    "-CNDT": [
+      ["i",null]
+    ],
+    "FLTV": [
+      ["f",null]
+    ],
+    "NPCO": [
+      ["i","count"],
+      ["s","name"]
+    ]
+  }
+}
