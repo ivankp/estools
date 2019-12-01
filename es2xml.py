@@ -54,10 +54,17 @@ class record:
             child.write(f)
         f.write('</{}>\n'.format(self.tag))
 
-def cdata(x):
-    s = str(x)
-    if any(c in '<>&"' for c in s):
-        return '<![CDATA['+s+']]>'
+xml_safe_dict = [
+  ('&', '&amp;'),
+  ('"', '&quot;'),
+  ("'", '&apos;'),
+  ('<', '&lt;'),
+  ('>', '&gt;')
+]
+def xml_safe(s):
+    s = str(s)
+    for c, x in xml_safe_dict:
+        s = s.replace(c,x)
     return s
 
 class attr:
@@ -70,11 +77,11 @@ class attr:
             f.write(' name="{}"'.format(self.fmt[1]))
         f.write(' fmt="{}">'.format(self.fmt[0]))
         if len(self.val)==1:
-            f.write(cdata(self.val[0]))
+            f.write(xml_safe(self.val[0]))
         else:
             f.write('\n')
             for x in self.val:
-                f.write('<x>'+cdata(x)+'</x>\n')
+                f.write('<x>'+xml_safe(x)+'</x>\n')
         f.write('</x>\n')
 
 rec_struct = struct.Struct('4sI')
@@ -122,8 +129,8 @@ def read(data,a,b):
             raise Exception('record ended at {} instead of {}'.format(a,b))
     return recs
 
-# tree = read(ess,0,70089+4+12)
-tree = read(ess,0,total_size)
+tree = read(ess,0,70089+4+12)
+# tree = read(ess,0,total_size)
 
 print('records in total:',nrec)
 print('top level:',len(tree))
