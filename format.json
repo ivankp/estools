@@ -12,7 +12,7 @@
       ["256s","Description"],
       ["I","NumRecords"]
     ],
-    "-GMDT": [
+    "TES3.GMDT": [
       ["6f",null],
       ["64s","CellName"],
       ["f",null],

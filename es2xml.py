@@ -38,13 +38,15 @@ fmt_flg = file_format['have_flags']
 
 nrec = 0
 class record:
-    def __init__(self,tag,size):
+    def __init__(self,tag,size,parent=None):
         self.tag = tag.decode()
         self.size = size
         self.flags = None
         self.children = [ ]
+        self.parent = parent
         global nrec
         nrec += 1
+
     def write(self,f):
         f.write('<{} size="{}"'.format(self.tag,self.size))
         if self.flags is not None:
@@ -53,6 +55,20 @@ class record:
         for child in self.children:
             child.write(f)
         f.write('</{}>\n'.format(self.tag))
+
+    def fmt(self):
+        tag = self.tag
+        p = self.parent
+        while True:
+            fmt = fmt_rec.get(tag)
+            if fmt is not None: return fmt
+            if p is None: break
+            tag = p.tag + '.' + tag
+            p = p.parent
+        if self.flags is None:
+            return [('s',None)]
+        else:
+            return ["children"]
 
 xml_safe_dict = [
   ('&', '&amp;'),
@@ -81,24 +97,21 @@ class attr:
         else:
             f.write('\n')
             for x in self.val:
-                f.write('<x>'+xml_safe(x)+'</x>\n')
+                f.write('<v>'+xml_safe(x)+'</v>\n')
         f.write('</x>\n')
 
 rec_struct = struct.Struct('4sI')
 flags_struct = struct.Struct('8s')
 
-def read(data,a,b):
+def read(data,a,b,parent=None):
     recs = [ ]
     while True:
-        rec = record(*rec_struct.unpack_from(data,a))
+        rec = record(*rec_struct.unpack_from(data,a),parent)
         a += 8
         if rec.tag in fmt_flg:
             rec.flags = rb2str(flags_struct.unpack_from(data,a)[0])
             a += 8
-        try:
-            fmts = fmt_rec[rec.tag]
-        except KeyError:
-            fmts = [('s',None)] if rec.flags is None else ["children"]
+        fmts = rec.fmt()
 
         end = a + rec.size
         # print('{:4} {:8} {:8} {:8} {:8}'.format(rec.tag,rec.size,a,end,b))
@@ -106,7 +119,7 @@ def read(data,a,b):
         last = len(fmts)-1
         for i in range(last+1):
             if fmts[i] == "children":
-                rec.children.extend( read(data,a,end) )
+                rec.children.extend( read(data,a,end,rec) )
                 a = end
             else:
                 fmt = fmts[i][0]
