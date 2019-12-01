@@ -7,32 +7,121 @@
   "records": {
     "HEDR": [
       ["f","Version"],
-      ["4s","FileType"],
+      ["I","FileType","0=esp, 1=esm, 32=ess"],
       ["32s","Author"],
       ["256s","Description"],
       ["I","NumRecords"]
     ],
     "TES3.GMDT": [
-      ["6f",null],
+      ["6f"],
       ["64s","CellName"],
-      ["f",null],
+      ["f"],
       ["32s","CharacterName"]
     ],
-    "TES3.DATA": [
-      ["L","FileSize"]
-    ],
+    "TES3.DATA": [ ["L","FileSize"] ],
     "CLDT": [
-      ["15I",null]
+      ["I","Attribute1"],
+      ["I","Attribute2"],
+      ["I","Specialization","0=Combat, 1=Magic, 2=Stealth"],
+      ["I","Minor1"],
+      ["I","Major1"],
+      ["I","Minor2"],
+      ["I","Major2"],
+      ["I","Minor3"],
+      ["I","Major3"],
+      ["I","Minor4"],
+      ["I","Major4"],
+      ["I","Minor5"],
+      ["I","Major5"],
+      ["4s","Flags"],
+      ["4s","AutoCalcFlags"]
     ],
-    "-CNDT": [
-      ["i",null]
-    ],
-    "GLOB.FLTV": [
-      ["f",null]
-    ],
+    "GLOB.FNAM": [ ["c","type"] ],
+    "GLOB.FLTV": [ ["f"] ],
     "NPCO": [
       ["i","count"],
       ["s","name"]
+    ],
+    "SCPT.SCHD": [
+      ["32s","Name"],
+      ["I","NumShorts"],
+      ["I","NumLongs"],
+      ["I","NumFloats"],
+      ["I","ScriptDataSize"],
+      ["I","LocalVarSize"]
+    ],
+    "REGN.NAME": [ ["s","id"] ],
+    "REGN.FNAM": [ ["s","name"] ],
+    "REGN.WEAT": [
+      ["b","Clear"],
+      ["b","Cloudy"],
+      ["b","Foggy"],
+      ["b","Overcast"],
+      ["b","Rain"],
+      ["b","Thunder"],
+      ["b","Ash"],
+      ["b","Blight"],
+      ["s"]
+    ],
+    "CONT.CNDT": [
+      ["f","Weight"]
+    ],
+    "CONT.FLAG": [
+      ["4s","0x1=Organic, 0x2=Respawn"]
+    ],
+    "SPEL.NAME": [ ["s","id"] ],
+    "SPEL.FNAM": [ ["s","name"] ],
+    "SPEL.SPDT": [
+      ["I","type"],
+      ["I","Cost"],
+      ["4s","Flags","0x1=autocal, 0x2=PC start, 0x4=always succeeds"]
+    ],
+    "SPEL.ENAM": [ ["24s","Enchantment data"] ],
+    "NPC_.NPDT": [ "size", {
+        "52": [
+          ["h","Level"],
+          ["b","Str"],
+          ["b","Int"],
+          ["b","Wil"],
+          ["b","Agi"],
+          ["b","Spe"],
+          ["b","End"],
+          ["b","Per"],
+          ["b","Luck"],
+          ["27b","Skills"],
+          ["b","Reputation"],
+          ["h","Health"],
+          ["h","Magika"],
+          ["h","Fatigue"],
+          ["b","Disposition"],
+          ["b","FactionID"],
+          ["b","Rank"],
+          ["b"],
+          ["i","Gold"]
+        ],
+        "12": [
+          ["h","Level"],
+          ["b","Disposition"],
+          ["b","FactionID?"],
+          ["b","Rank"],
+          ["3b"],
+          ["i","Gold?"]
+        ]
+      }
+    ],
+    "ALCH.ALDT": [
+      ["f","Weight"],
+      ["I","Value"],
+      ["I","AutoCalc"]
+    ],
+    "ALCH.ENAM": [
+      ["h","EffectID"],
+      ["s"]
+    ],
+    "ALCH.TEXT": [ ["s","Inventory Icon"] ],
+    "FMAP.MAPH": [
+      ["I","Size"],
+      ["I","Value"]
     ]
   }
 }

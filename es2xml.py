@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# https://www.mwmythicmods.com/argent/tech/es_format.html
+# https://www.mwmythicmods.com/tutorials/MorrowindESPFormat.html
 
 import sys, struct, json, re
 
@@ -9,6 +11,8 @@ if len(sys.argv)!=2:
 assert (struct.calcsize('i')==4)
 assert (struct.calcsize('I')==4)
 assert (struct.calcsize('1s')==1)
+assert (struct.calcsize('b')==1)
+assert (struct.calcsize('h')==2)
 assert (struct.calcsize('L')==8)
 
 def b2str(x):
@@ -48,21 +52,28 @@ class record:
         global nrec
         nrec += 1
 
-    def write(self,f):
-        f.write('<{} size="{}"'.format(self.tag,self.size))
+    def write(self,f,indent=0):
+        indent_str = ' '*indent
+        f.write(indent_str+'<{} size="{}"'.format(self.tag,self.size))
         if self.flags is not None:
             f.write(' flags="{}"'.format(self.flags))
         f.write('>\n')
         for child in self.children:
-            child.write(f)
-        f.write('</{}>\n'.format(self.tag))
+            child.write(f,indent+1)
+        f.write(indent_str+'</{}>\n'.format(self.tag))
 
     def fmt(self):
         tag = self.tag
         p = self.parent
         while True:
             fmt = fmt_rec.get(tag)
-            if fmt is not None: return fmt
+            if fmt is not None:
+                if fmt[0]=="size":
+                    fmt = fmt[1].get(str(self.size))
+                    if fmt is None: break
+                    return fmt
+                else:
+                    return fmt
             if p is None: break
             tag = p.tag + '.' + tag
             p = p.parent
@@ -88,17 +99,24 @@ class attr:
     def __init__(self,fmt,val):
         self.fmt = fmt
         self.val = val
-    def write(self,f):
-        f.write('<x')
-        if self.fmt[1] is not None:
-            f.write(' name="{}"'.format(self.fmt[1]))
-        f.write(' fmt="{}">'.format(self.fmt[0]))
+    order = ['fmt','name','note']
+    def write(self,f,indent=0):
+        indent_str = ' '*indent
+        f.write(indent_str+'<x')
+        nfmt = len(self.fmt)
+        for i in range(len(attr.order)):
+            if i>=nfmt: break
+            x = self.fmt[i]
+            if x is None: continue
+            f.write(' {}="{}"'.format(attr.order[i],x))
+        f.write('>')
         if len(self.val)==1:
             f.write(xml_safe(self.val[0]))
         else:
             f.write('\n')
             for x in self.val:
-                f.write('<v>'+xml_safe(x)+'</v>\n')
+                f.write(indent_str+' <v>'+xml_safe(x)+'</v>\n')
+            f.write(indent_str)
         f.write('</x>\n')
 
 rec_struct = struct.Struct('4sI')

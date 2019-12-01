@@ -10,6 +10,8 @@ import re, struct, codecs
 assert (struct.calcsize('i')==4)
 assert (struct.calcsize('I')==4)
 assert (struct.calcsize('1s')==1)
+assert (struct.calcsize('b')==1)
+assert (struct.calcsize('h')==2)
 assert (struct.calcsize('L')==8)
 
 from lxml import etree as Tree
@@ -27,7 +29,7 @@ def str_enc(x):
     return decode(x)
 
 def char_enc(x):
-    x = x.encode()
+    x = str_enc(x)
     if len(x)!=1: raise Exception('c must be a single byte')
     return x
 
@@ -150,14 +152,19 @@ def save(f,node):
                 values[i] = ''
         return f.write(pack(attrib.get('fmt'),values))
 
-# print(root.xpath('/file/TES3')[0].attrib)
+num_records = len(root.xpath('/file/*')) - 1
+print("NumRecords:",num_records)
+root.xpath('(//HEDR/*[@name="NumRecords"])[1]')[0]\
+    .text = str(num_records)
 
+print('Fixing sizes')
 for record in root:
     fix(record)
 
 # with open('tmp.xml', 'wb') as f:
 #     f.write(Tree.tostring(root, pretty_print=True))
 
+print('Writing output file')
 with open(sys.argv[2],'wb') as f:
     for record in root:
         save(f,record)
