@@ -1,12 +1,4 @@
-{ "have_flags": [
-    "TES3", "GLOB", "CLAS", "SCPT", "REGN", "SPEL", "NPC_", "BOOK",
-    "CREA", "NPCC", "CREC", "ALCH", "CELL", "REFR", "DIAL", "QUES",
-    "JOUR", "KLST", "FMAP", "PCDT", "STLN", "GAME", "CONT", "CNTC",
-    "SPLM", "INFO", "ENCH", "CLOT", "FACT", "WEAP", "GMST", "RACE",
-    "SOUN", "SKIL", "MGEF", "BSGN", "LTEX", "STAT", "DOOR", "MISC",
-    "BODY", "LIGH", "ARMO", "REPA", "ACTI", "APPA", "LOCK", "PROB",
-    "INGR", "LEVI", "LEVC", "LAND", "PGRD", "SNDG"
-  ],
+{ "have_flags": [ ],
   "records": {
     "HEDR": [
       ["f","Version"],
@@ -21,7 +13,7 @@
       ["f"],
       ["32s","CharacterName"]
     ],
-    "TES3.DATA": [ ["L","FileSize"] ],
+    "TES3.DATA": [ ["Q","FileSize"] ],
     "CLDT": [
       ["I","Attribute1"],
       ["I","Attribute2"],

@@ -21,7 +21,8 @@ assert (struct.calcsize('I')==4)
 assert (struct.calcsize('1s')==1)
 assert (struct.calcsize('b')==1)
 assert (struct.calcsize('h')==2)
-assert (struct.calcsize('L')==8)
+assert (struct.calcsize('Q')==8)
+assert (struct.calcsize('q')==8)
 
 def b2str(x):
     if isinstance(x,bytes):
@@ -139,7 +140,7 @@ def read(data,a,b,parent=None):
             print('Error at file pos:',a)
             raise
         a += 8
-        if rec.tag in fmt_flg:
+        if (parent is None) or (rec.tag in fmt_flg):
             rec.flags = rb2str(flags_struct.unpack_from(data,a)[0])
             a += 8
         fmts = rec.fmt()

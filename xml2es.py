@@ -11,7 +11,8 @@ assert (struct.calcsize('I')==4)
 assert (struct.calcsize('1s')==1)
 assert (struct.calcsize('b')==1)
 assert (struct.calcsize('h')==2)
-assert (struct.calcsize('L')==8)
+assert (struct.calcsize('Q')==8)
+assert (struct.calcsize('q')==8)
 
 from lxml import etree as Tree
 with open(sys.argv[1]) as f:
