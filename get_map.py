@@ -43,10 +43,12 @@ from lxml import etree as Tree
 with open(sys.argv[1]) as f:
     root = Tree.parse(f).getroot()
 
-size = int(root.xpath('(/file/FMAP/MAPH/x)[1]')[0].text)
-mapd = root.xpath('(/file/FMAP/MAPD/x)[1]')[0].text
+fmap = root.xpath('(/file/FMAP)[1]')[0]
+size = int(fmap.xpath('(MAPH/x)[1]')[0].text)
+mapd = fmap.xpath('(MAPD/x)[1]')[0].text
 mapd = decode(mapd)
 print('raw size:',len(mapd))
+assert (len(mapd) == size*size*3)
 png = make_png(add4th(mapd),size,size)
 print('png size:',len(png))
 
