@@ -4,6 +4,14 @@
 
 import sys, struct, json, re
 
+flags = { x: False for x in ['v'] }
+for i,arg in enumerate(sys.argv[1:],1):
+    if not arg.startswith('-'): continue
+    a = arg[1:]
+    if a in flags:
+        flags[a] = True
+        print('set',sys.argv.pop(i))
+
 if len(sys.argv)!=2 and len(sys.argv)!=3:
     print('usage:',sys.argv[0],'save.ess [output.xml]')
     sys.exit(1)
@@ -137,7 +145,8 @@ def read(data,a,b,parent=None):
         fmts = rec.fmt()
 
         end = a + rec.size
-        # print('{:4} {:8} {:8} {:8} {:8}'.format(rec.tag,rec.size,a,end,b))
+        if flags['v']:
+            print('{:4} {:8} {:8} {:8} {:8}'.format(rec.tag,rec.size,a,end,b))
 
         last = len(fmts)-1
         for i in range(last+1):
@@ -174,7 +183,7 @@ print('top level:',len(tree))
 if len(sys.argv)==3:
     ofname = sys.argv[2]
 else:
-    ofname = re.sub('(?:\.ess)?$','.xml',sys.argv[1])
+    ofname = re.sub('(?:\.es[spm])?$','.xml',sys.argv[1])
     ofname = re.sub(r'^.*[/\\]','',ofname)
 print('writing',ofname)
 with open(ofname,'w') as f:

@@ -2,7 +2,10 @@
     "TES3", "GLOB", "CLAS", "SCPT", "REGN", "SPEL", "NPC_", "BOOK",
     "CREA", "NPCC", "CREC", "ALCH", "CELL", "REFR", "DIAL", "QUES",
     "JOUR", "KLST", "FMAP", "PCDT", "STLN", "GAME", "CONT", "CNTC",
-    "SPLM", "INFO", "ENCH", "CLOT", "FACT", "WEAP"
+    "SPLM", "INFO", "ENCH", "CLOT", "FACT", "WEAP", "GMST", "RACE",
+    "SOUN", "SKIL", "MGEF", "BSGN", "LTEX", "STAT", "DOOR", "MISC",
+    "BODY", "LIGH", "ARMO", "REPA", "ACTI", "APPA", "LOCK", "PROB",
+    "INGR", "LEVI", "LEVC", "LAND", "PGRD", "SNDG"
   ],
   "records": {
     "HEDR": [
@@ -138,6 +141,28 @@
           ["i","GridY"]
         ]
       }
+    ],
+    "ENCH.ENDT": [
+      ["i","Type","0=Cast Once, 1=on Strike, 2=when Used, 3=Constant Effect"],
+      ["i","Enchant Cost"],
+      ["i","Charge"],
+      ["i","AutoCalc"]
+    ],
+    "ENCH.ENAM": [
+      ["h","EffectID"],
+      ["b","SkillID"],
+      ["b","AttributeID"],
+      ["i","RangeType","0=Self, 1=Touch, 2=Target"],
+      ["i","Area"],
+      ["i","Duration"],
+      ["i","MagMin"],
+      ["i","MagMax"]
+    ],
+    "CLOT.CTDT": [
+      ["i","Type","0=Pants, 1=Shoes, 2=Shirt, 3=Belt, 4=Robe, 5=Right Glove, 6=Left Glove, 7=Skirt, 8=Ring, 9=Amulet"],
+      ["f","Weight"],
+      ["h","Value"],
+      ["h","EnchantPts"]
     ]
   }
 }
