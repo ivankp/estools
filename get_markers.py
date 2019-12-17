@@ -9,10 +9,24 @@ from lxml import etree as Tree
 with open(sys.argv[1]) as f:
     root = Tree.parse(f).getroot()
 
+markers = [ ]
 for cell in root.xpath('/file/CELL'):
     name = cell.xpath('NAME[1]/x')[0].text
     if not name: continue # blank name
-    data = cell.xpath('DATA[1]/x')
-    if int(data[0].text) & 0x1: continue # interior
-    print(name, data[1].text, data[2].text)
+    data = [ int(x.text) for x in cell.xpath('DATA[1]/x') ]
+    if data[0] & 0x1: continue # interior
+    markers.append((name,data))
+
+markers.sort()
+
+max_len = 0
+for name, data in markers:
+    l = len(name)
+    if l > max_len:
+        max_len = l
+
+max_len = str(max_len)
+for name, data in markers:
+    print(('{:'+max_len+'} {:>4} {:>4} {:0>8b}').format(
+        name, data[1], data[2], data[0]))
 
