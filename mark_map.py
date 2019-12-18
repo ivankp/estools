@@ -15,6 +15,7 @@ for cell in root.xpath('/file/CELL'):
     if not name: continue # blank name
     data = [ int(x.text) for x in cell.xpath('DATA[1]/x') ]
     if data[0] & 0x1: continue # interior
+    if not (data[0] & 0x20): continue # not discovered
     print(name, data[1], data[2])
     markers.append(data[1:3])
 

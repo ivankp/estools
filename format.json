@@ -155,6 +155,9 @@
       ["f","Weight"],
       ["h","Value"],
       ["h","EnchantPts"]
+    ],
+    "CELL.FRMR": [
+      ["i","Index"]
     ]
   }
 }
