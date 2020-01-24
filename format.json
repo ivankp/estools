@@ -158,6 +158,9 @@
     ],
     "CELL.FRMR": [
       ["i","Index"]
+    ],
+    "CNTC.INDX": [
+      ["i"]
     ]
   }
 }
