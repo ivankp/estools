@@ -161,6 +161,16 @@
     ],
     "CNTC.INDX": [
       ["i"]
+    ],
+    "NPCC.NPDT": [ "size", {
+        "8": [
+          ["4b"],
+          ["I","index"]
+        ]
+      }
+    ],
+    "XHLT": [
+      ["i","Health"]
     ]
   }
 }
