@@ -184,8 +184,8 @@ print('top level:',len(tree))
 if len(sys.argv)==3:
     ofname = sys.argv[2]
 else:
-    ofname = re.sub('\.es[spm]$','.xml',sys.argv[1])
-    ofname = re.sub(r'^.*[/\\]','',ofname)
+    ofname = re.sub(r'^.*[/\\]','',
+             re.sub(r'\.[^.]+$','',sys.argv[1])+'.xml')
 print('writing',ofname)
 with open(ofname,'w') as f:
     f.write('<file name="'+sys.argv[1]+'">\n')
